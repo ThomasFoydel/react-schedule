@@ -8,14 +8,27 @@ import {
   setUpWeek,
   entries,
 } from './util';
+import './Schedule.scss';
+
+// todo: sort timeblocks so that they go in order by starttime every time one is moved
+// to make overlap behavior consistent
+
+// todo: when drag or resize, change the startDate and endDate using week info, not just start and end
+//
+
+// in .map that churns out DNDs, check if reccuring, if not, check if date is between current week's start and end
+// if it is render it, if not, don't
+
+// use uuid to make ids for each new timeblock
+
+// integrate with fullstack, add save button to send blockedTimes to server
+
 let current = new Date();
 let dayOfWeek = current.getDay();
 
 const App = () => {
   const [week, setWeek] = useState(setUpWeek());
   const [blockedTimes, setBlockedTimes] = useState(entries);
-
-  const [newBlockForm, setNewBlockForm] = useState({});
 
   const destroy = (d) => {
     console.log('destroy: ', d);

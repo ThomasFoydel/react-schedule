@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Dnd.scss';
 import { Rnd } from 'react-rnd';
 
 const Dnd = ({ data, destroy, week, days, times }) => {
@@ -24,13 +23,14 @@ const Dnd = ({ data, destroy, week, days, times }) => {
     let { node } = el;
     let { transform, height, width } = node.style;
     let elX = el.x;
+
     elX -= 60;
     let x = Math.ceil(elX / 120);
     let y = transform.split(', ')[1];
     y = y.substring(0, y.length - 3);
     y = Number(y);
-    if (y < 0) y += 2400;
     if (y < 50 && y > -50) y = 0;
+    if (y < 0) y += 2400;
     let startIndex = Math.ceil(y / 50);
     setStartTime(times[startIndex]);
     if (Number(height) < 0) height = 0;
@@ -51,8 +51,10 @@ const Dnd = ({ data, destroy, week, days, times }) => {
     let h = height.substring(0, height.length - 2);
     h /= 50;
     let startIndex = times.indexOf(start);
-    let endTime = times[startIndex + h];
-    setEndTime(endTime);
+    let newEndTime = times[startIndex + h];
+    if (newEndTime && newEndTime !== startTime) {
+      setEndTime(newEndTime);
+    }
   };
   return (
     <Rnd
