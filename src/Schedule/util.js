@@ -93,10 +93,19 @@ export const setUpWeek = (weeksForward) => {
   }
   // fill in backwards to monday, if day is not sunday
   if (dayOfWeek > 0) {
+    let count = 1;
     for (let j = dayOfWeek; j > 0; j--) {
-      let daysBefore = j * mSecondsInADay;
+      let daysBefore = count * mSecondsInADay;
       let date = new Date(current - daysBefore);
       weekObj[j - 1] = date;
+      count++;
+      //
+      //
+      // let daysBefore = j * mSecondsInADay;
+      // let date = new Date(current - daysBefore);
+      // weekObj[j - 1] = date;
+      //
+      ////
       // let timeBefore = (6 - j) * mSecondsInADay;
       // let date = new Date(current - timeBefore);
       // weekObj[j - 1] = date;
@@ -126,62 +135,6 @@ export const entries = [
     startDate: new Date('2020', '08', '14', '00', '00'),
     endDate: new Date('2020', '08', '14', '01', '30'),
   },
-  // {
-  //   start: '1:30 AM',
-  //   end: '2:30 AM',
-  //   day: 'Monday',
-  //   title: 'lunch',
-  //   id: 2,
-  // },
-  // {
-  //   start: '2:30 AM',
-  //   end: '3:30 AM',
-  //   day: 'Tuesday',
-  //   title: 'bjj',
-  //   id: 3,
-  // },
-  // {
-  //   start: '3:30 AM',
-  //   end: '4:30 AM',
-  //   day: 'Wednesday',
-  //   title: 'bjj',
-  //   id: 4,
-  // },
-  // {
-  //   start: '4:30 AM',
-  //   end: '5:30 AM',
-  //   day: 'Thursday',
-  //   title: 'lunch',
-  //   id: 5,
-  // },
-  // {
-  //   start: '5:30 AM',
-  //   end: '6:30 AM',
-  //   day: 'Friday',
-  //   title: 'bjj',
-  //   id: 6,
-  // },
-  // {
-  //   start: '1:30 AM',
-  //   end: '2:30 AM',
-  //   day: 'Saturday',
-  //   title: 'bjj',
-  //   id: 7,
-  // },
-  // {
-  //   start: '3:30 AM',
-  //   end: '5:30 AM',
-  //   day: 'Saturday',
-  //   title: 'bjj',
-  //   id: 8,
-  // },
-  // {
-  //   start: '6:30 AM',
-  //   end: '7:30 AM',
-  //   day: 'Saturday',
-  //   title: 'bjj',
-  //   id: 9,
-  // },
 ];
 
 export const checkBlock = (data, week) => {

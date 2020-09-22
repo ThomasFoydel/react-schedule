@@ -11,36 +11,30 @@ import {
 } from './util';
 import './Schedule.scss';
 
-// todo: sort timeblocks so that they go in order by starttime every time one is moved
-// to make overlap behavior consistent
+// todo: when resize, change the endDate using week info, not just start and end
 
-// todo: when drag or resize, change the startDate and endDate using week info, not just start and end
-//
-
-// in .map that churns out DNDs, check if reccuring, if not, check if date is between current week's start and end
-// if it is render it, if not, don't
-
-// change blockTimes every time drag or resize
+// when recurring is toggled off, set startDate and endDate to the matching date for the current week
+// using the same time
 
 // use uuid to make ids for each new timeblock
+
+// make submit button, check if blockEntries is getting edited properly
 
 // integrate with fullstack, add save button to send blockedTimes to server
 
 let current = new Date();
 let dayOfWeek = current.getDay();
 
-const App = () => {
+const Schedule = () => {
   const [week, setWeek] = useState(setUpWeek());
+  console.log({ week });
   const [blockedTimes, setBlockedTimes] = useState(entries);
   const [blockEntries, setBlockEntries] = useState(entries);
 
   const destroy = (id) => {
-    console.log('destroy: ', id);
     setBlockedTimes((blocks) => {
       let block = blocks.filter((b) => b.id === id)[0];
-      console.log({ block });
       let index = blocks.indexOf(block);
-      console.log({ index });
       let copy = [...blocks];
       copy[index].invisible = true;
       return blocks;
@@ -48,10 +42,8 @@ const App = () => {
     setBlockEntries((blocks) => blocks.filter((block) => block.id !== id));
   };
 
-  // change display to none or hidden inside blockedtimes, delete from blockentries
-
   const handleGridClick = (e) => {
-    let { day, i, hour } = JSON.parse(e.target.id);
+    let { day, hour } = JSON.parse(e.target.id);
     let dayIndex = days.indexOf(day);
     let clicked = week[dayIndex];
     let clickedDate = clicked.getDate();
@@ -77,7 +69,6 @@ const App = () => {
       recurring: false,
       id: Math.random() * 20 * Math.random() * 1000,
     };
-    console.log('$$$$$BINGOP: ', newBlock);
     setBlockedTimes([...blockedTimes, newBlock]);
   };
 
@@ -118,7 +109,7 @@ const App = () => {
                         <div
                           className='grid-time'
                           key={hour}
-                          id={JSON.stringify({ i, day, hour })}
+                          id={JSON.stringify({ day, hour })}
                           onClick={handleGridClick}
                         >
                           {hour}
@@ -160,4 +151,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Schedule;

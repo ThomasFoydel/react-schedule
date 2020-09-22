@@ -149,6 +149,7 @@ const Dnd = ({
         border: '1px solid black',
         position: 'relative',
         zIndex: invisible ? '-1' : '1',
+        opacity: invisible ? '0' : '1',
       }}
       className={`rnd-item recurring-${recurring}`}
       bounds='parent'
