@@ -7,6 +7,7 @@ import {
   getOneHalfHourAhead,
   setUpWeek,
   entries,
+  checkBlock,
 } from './util';
 import './Schedule.scss';
 
@@ -19,6 +20,8 @@ import './Schedule.scss';
 // in .map that churns out DNDs, check if reccuring, if not, check if date is between current week's start and end
 // if it is render it, if not, don't
 
+// change blockTimes every time drag or resize
+
 // use uuid to make ids for each new timeblock
 
 // integrate with fullstack, add save button to send blockedTimes to server
@@ -29,10 +32,23 @@ let dayOfWeek = current.getDay();
 const App = () => {
   const [week, setWeek] = useState(setUpWeek());
   const [blockedTimes, setBlockedTimes] = useState(entries);
+  const [blockEntries, setBlockEntries] = useState(entries);
 
-  const destroy = (d) => {
-    console.log('destroy: ', d);
+  const destroy = (id) => {
+    console.log('destroy: ', id);
+    setBlockedTimes((blocks) => {
+      let block = blocks.filter((b) => b.id === id)[0];
+      console.log({ block });
+      let index = blocks.indexOf(block);
+      console.log({ index });
+      let copy = [...blocks];
+      copy[index].invisible = true;
+      return blocks;
+    });
+    setBlockEntries((blocks) => blocks.filter((block) => block.id !== id));
   };
+
+  // change display to none or hidden inside blockedtimes, delete from blockentries
 
   const handleGridClick = (e) => {
     let { day, i, hour } = JSON.parse(e.target.id);
@@ -44,6 +60,8 @@ const App = () => {
     if (clickedMonth < 10) clickedMonth = `0${clickedMonth}`;
     let clickedYear = clicked.getFullYear();
     let hourMin = toTimeNumber(hour);
+    // todo: change the following to not use the datestring parsing method, pass in as separate args instead
+    // remember: when the method is changed, remove clickedMonth++ line above
     let startString = `${clickedYear}-${clickedMonth}-${clickedDate}T${hourMin}`;
     let startDate = new Date(startString);
     let endTime = startDate.getTime() + 1800000;
@@ -57,9 +75,14 @@ const App = () => {
       day,
       title: '',
       recurring: false,
-      id: Math.random() * Math.random() * 1000,
+      id: Math.random() * 20 * Math.random() * 1000,
     };
+    console.log('$$$$$BINGOP: ', newBlock);
     setBlockedTimes([...blockedTimes, newBlock]);
+  };
+
+  const changeRecurring = (e) => {
+    console.log('changeRecurring e: ', e);
   };
 
   return (
@@ -111,17 +134,25 @@ const App = () => {
               // drag and drop time blocks
               //////////////////////////////
             }
-            {blockedTimes.map((data) => (
-              <Dnd
-                data={data}
-                destroy={destroy}
-                key={data.id}
-                week={week}
-                currentDay={dayOfWeek}
-                days={days}
-                times={halfHours}
-              />
-            ))}
+            {blockedTimes.map((data) => {
+              const inCurrentWeek = checkBlock(data, week);
+              if (inCurrentWeek) {
+                return (
+                  <Dnd
+                    invisible={data.invisible}
+                    data={data}
+                    destroy={destroy}
+                    key={data.id}
+                    week={week}
+                    currentDay={dayOfWeek}
+                    days={days}
+                    times={halfHours}
+                    setBlockedTimes={setBlockEntries}
+                    changeRecurring={changeRecurring}
+                  />
+                );
+              }
+            })}
           </div>
         </div>
       </div>

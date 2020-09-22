@@ -112,61 +112,97 @@ export const entries = [
     day: 'Sunday',
     title: 'bjj',
     id: 1,
+    recurring: false,
+    startDate: new Date('2020', '08', '20', '00', '00'),
+    endDate: new Date('2020', '08', '20', '01', '30'),
   },
   {
-    start: '1:30 AM',
-    end: '2:30 AM',
+    start: '12:00 AM',
+    end: '1:30 AM',
     day: 'Monday',
-    title: 'lunch',
+    title: 'bjj',
     id: 2,
+    recurring: false,
+    startDate: new Date('2020', '08', '14', '00', '00'),
+    endDate: new Date('2020', '08', '14', '01', '30'),
   },
-  {
-    start: '2:30 AM',
-    end: '3:30 AM',
-    day: 'Tuesday',
-    title: 'bjj',
-    id: 3,
-  },
-  {
-    start: '3:30 AM',
-    end: '4:30 AM',
-    day: 'Wednesday',
-    title: 'bjj',
-    id: 4,
-  },
-  {
-    start: '4:30 AM',
-    end: '5:30 AM',
-    day: 'Thursday',
-    title: 'lunch',
-    id: 5,
-  },
-  {
-    start: '5:30 AM',
-    end: '6:30 AM',
-    day: 'Friday',
-    title: 'bjj',
-    id: 6,
-  },
-  {
-    start: '1:30 AM',
-    end: '2:30 AM',
-    day: 'Saturday',
-    title: 'bjj',
-    id: 7,
-  },
-  {
-    start: '3:30 AM',
-    end: '5:30 AM',
-    day: 'Saturday',
-    title: 'bjj',
-    id: 8,
-  },
-  {
-    start: '6:30 AM',
-    end: '7:30 AM',
-    day: 'Saturday',
-    title: 'bjj',
-    id: 9,
-  },
+  // {
+  //   start: '1:30 AM',
+  //   end: '2:30 AM',
+  //   day: 'Monday',
+  //   title: 'lunch',
+  //   id: 2,
+  // },
+  // {
+  //   start: '2:30 AM',
+  //   end: '3:30 AM',
+  //   day: 'Tuesday',
+  //   title: 'bjj',
+  //   id: 3,
+  // },
+  // {
+  //   start: '3:30 AM',
+  //   end: '4:30 AM',
+  //   day: 'Wednesday',
+  //   title: 'bjj',
+  //   id: 4,
+  // },
+  // {
+  //   start: '4:30 AM',
+  //   end: '5:30 AM',
+  //   day: 'Thursday',
+  //   title: 'lunch',
+  //   id: 5,
+  // },
+  // {
+  //   start: '5:30 AM',
+  //   end: '6:30 AM',
+  //   day: 'Friday',
+  //   title: 'bjj',
+  //   id: 6,
+  // },
+  // {
+  //   start: '1:30 AM',
+  //   end: '2:30 AM',
+  //   day: 'Saturday',
+  //   title: 'bjj',
+  //   id: 7,
+  // },
+  // {
+  //   start: '3:30 AM',
+  //   end: '5:30 AM',
+  //   day: 'Saturday',
+  //   title: 'bjj',
+  //   id: 8,
+  // },
+  // {
+  //   start: '6:30 AM',
+  //   end: '7:30 AM',
+  //   day: 'Saturday',
+  //   title: 'bjj',
+  //   id: 9,
+  // },
 ];
+
+export const checkBlock = (data, week) => {
+  if (data.recurring === true) return true;
+  let start = week[0];
+  let end = week[6];
+
+  let startYear = start.getFullYear();
+  let startMonth = Number(start.getMonth());
+  if (startMonth < 10) startMonth = `0${startMonth}`;
+  let startDay = start.getDate();
+  let startWeek = new Date(startYear, startMonth, startDay, '00', '00', '00');
+
+  let endYear = end.getFullYear();
+  let endMonth = end.getMonth();
+  if (endMonth < 10) endMonth = `0${endMonth}`;
+  let endDay = end.getDate();
+  let endWeek = new Date(endYear, endMonth, endDay, '23', '59', '59', '999');
+
+  let block = data.startDate;
+  if (block >= startWeek && block < endWeek) {
+    return true;
+  } else return false;
+};
