@@ -177,7 +177,9 @@ const Dnd = ({
         <p>
           {startTime} - {endTime}
         </p>
-        <button onClick={toggleRecurring}>R</button>
+        <button className='recurring-btn' onClick={toggleRecurring}>
+          R
+        </button>
       </div>
     </Rnd>
   );
