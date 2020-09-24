@@ -27,7 +27,6 @@ let dayOfWeek = current.getDay();
 
 const Schedule = () => {
   const [week, setWeek] = useState(setUpWeek());
-  console.log({ week });
   const [blockedTimes, setBlockedTimes] = useState(entries);
   const [blockEntries, setBlockEntries] = useState(entries);
 

@@ -31,7 +31,6 @@ const Dnd = ({
   };
 
   const updateBlocks = () => {
-    //todo: check sorting
     setBlockedTimes((times) => {
       let filteredTimes = times.filter((time) => time.id !== data.id);
       let newTimes = [
@@ -94,8 +93,6 @@ const Dnd = ({
       newStartMin
     );
 
-    // todo: setEndDate
-
     // NEW END TIME
     if (Number(height) < 0) height = 0;
     let h = height.substring(0, height.length - 2);
@@ -106,8 +103,6 @@ const Dnd = ({
     let newEndHour = endSplit[0];
     let newEndMin = endSplit[1].split(' ')[0];
     let newEndDate = new Date(newYear, newMonth, newDay, newEndHour, newEndMin);
-
-    // let newEndDate = new Date(newYear, NewMonth, newDay, '00', '00', '00');
 
     // UPDATE STATE
     setStartTime(times[startIndex]);
@@ -133,8 +128,27 @@ const Dnd = ({
       setEndTime(newEndTime);
     }
 
-    // todo: setStartDate
-    // todo: setEndDate
+    // todo: consider also setting the start date again as well, incase this is from a previous
+    // week and has been reccuring for a while and has a startDate that does not match
+
+    // SET END DATE
+    let newEndYear = endDate.getFullYear();
+    let newEndMonth = Number(endDate.getMonth());
+    if (newEndMonth < 10) newEndMonth = `0${newEndMonth}`;
+    let newEndDay = endDate.getDate();
+
+    let endSplit = newEndTime.split(':');
+    let newEndHour = endSplit[0];
+    let newEndMin = endSplit[1].split(' ')[0];
+    let newEndDate = new Date(
+      newEndYear,
+      newEndMonth,
+      newEndDay,
+      newEndHour,
+      newEndMin
+    );
+
+    setendDate({ newEndDate });
     updateBlocks();
   };
 
