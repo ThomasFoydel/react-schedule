@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
-
+import { dateFromDateAndTime } from './util';
 const Dnd = ({
   data,
   destroy,
@@ -16,8 +16,12 @@ const Dnd = ({
   const [title, setTitle] = useState(data.title);
 
   const [startDate, setStartDate] = useState(data.startDate);
-  const [endDate, setendDate] = useState(data.endDate);
+  const [endDate, setEndDate] = useState(data.endDate);
   const [recurring, setRecurring] = useState(data.recurring);
+
+  useEffect(() => {
+    console.log({ endDate });
+  }, [endDate]);
 
   let t = times.indexOf(data.start);
   let e = times.indexOf(data.end);
@@ -66,49 +70,24 @@ const Dnd = ({
     let startIndex = Math.ceil(y / 50);
 
     let mSecondsInADay = 86400000;
-
     let index = x - days.indexOf(day);
-    // console.log({ index });
     const timeDifference = mSecondsInADay * index;
-    // console.log('%%%%%: ', days.indexOf(day));
     const prevDate = week[days.indexOf(day)];
     let newDate = new Date(prevDate.getTime() + timeDifference);
-    // console.log({ newDate });
-
-    // NEW DATE CALCULATIONS, year month day
-    let newYear = newDate.getFullYear();
-    let newMonth = Number(newDate.getMonth());
-    if (newMonth < 10) newMonth = `0${newMonth}`;
-    let newDay = newDate.getDate();
-
-    // NEW START DATE
-    let startSplit = times[startIndex].split(':');
-    let newStartHour = startSplit[0];
-    let newStartMin = startSplit[1].split(' ')[0];
-    let newStartDate = new Date(
-      newYear,
-      newMonth,
-      newDay,
-      newStartHour,
-      newStartMin
-    );
+    let newStartDate = dateFromDateAndTime(newDate, times[startIndex]);
 
     // NEW END TIME
     if (Number(height) < 0) height = 0;
     let h = height.substring(0, height.length - 2);
     h /= 50;
     let endTime = times[startIndex + h];
-
-    let endSplit = times[startIndex + h].split(':');
-    let newEndHour = endSplit[0];
-    let newEndMin = endSplit[1].split(' ')[0];
-    let newEndDate = new Date(newYear, newMonth, newDay, newEndHour, newEndMin);
+    let newEndDate = dateFromDateAndTime(newDate, endTime, times[startIndex]);
 
     // UPDATE STATE
     setStartTime(times[startIndex]);
     setEndTime(endTime);
     setStartDate(newStartDate);
-    setendDate(newEndDate);
+    setEndDate(newEndDate);
     setDay(days[x]);
     updateBlocks();
   };
@@ -126,33 +105,28 @@ const Dnd = ({
     let newEndTime = times[startIndex + h];
     if (newEndTime && newEndTime !== startTime) {
       setEndTime(newEndTime);
+      // todo: consider also setting the start date again as well, incase this is from a previous
+      // week and has been reccuring for a while and has a startDate that does not match
+
+      // SET END DATE
+      let newEndDate = dateFromDateAndTime(endDate, newEndTime, startTime);
+      setEndDate(newEndDate);
+      updateBlocks();
     }
-
-    // todo: consider also setting the start date again as well, incase this is from a previous
-    // week and has been reccuring for a while and has a startDate that does not match
-
-    // SET END DATE
-    let newEndYear = endDate.getFullYear();
-    let newEndMonth = Number(endDate.getMonth());
-    if (newEndMonth < 10) newEndMonth = `0${newEndMonth}`;
-    let newEndDay = endDate.getDate();
-
-    let endSplit = newEndTime.split(':');
-    let newEndHour = endSplit[0];
-    let newEndMin = endSplit[1].split(' ')[0];
-    let newEndDate = new Date(
-      newEndYear,
-      newEndMonth,
-      newEndDay,
-      newEndHour,
-      newEndMin
-    );
-
-    setendDate({ newEndDate });
-    updateBlocks();
   };
 
   const toggleRecurring = () => {
+    // set startDate to match the current week
+    // get current day of the week
+    // get that date from the week obj
+    // get current start time
+    // make new date with year month day hour min
+    let dayOfWeek = startDate.getDay();
+    let currentWeekDate = week[dayOfWeek];
+    let newStartDate = dateFromDateAndTime(currentWeekDate, startTime);
+    setStartDate(newStartDate);
+    let newEndDate = dateFromDateAndTime(currentWeekDate, endTime, startTime);
+    setEndDate(newEndDate);
     setRecurring((recurring) => !recurring);
     updateBlocks();
   };

@@ -19,6 +19,7 @@ import './Schedule.scss';
 // use uuid to make ids for each new timeblock
 
 // make submit button, check if blockEntries is getting edited properly
+// or d a useEffect to send every change to db?
 
 // integrate with fullstack, add save button to send blockedTimes to server
 

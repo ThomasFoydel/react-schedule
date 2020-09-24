@@ -159,3 +159,27 @@ export const checkBlock = (data, week) => {
     return true;
   } else return false;
 };
+
+export const dateFromDateAndTime = (date, time, startTime) => {
+  let newYear = date.getFullYear();
+  let newMonth = Number(date.getMonth());
+  // if (newMonth < 10) newMonth = `0${newMonth}`;
+  let newDay = Number(date.getDate());
+
+  let split = time.split(':');
+  let newHour = Number(split[0]);
+  let afterNoon = split[1].split(' ')[1] === 'PM';
+  if (afterNoon && newHour !== 12) newHour += 12;
+  // if it is 12:00am
+  if (!afterNoon && newHour === 12) newHour = 0;
+  let newMin = split[1].split(' ')[0];
+  // if it is 12:00am and this is not a start time, increase day by 1 (its 12:00AM the next day)
+  if (startTime && newHour === 0) {
+    let startIndex = halfHours.indexOf(startTime);
+    if (startIndex > 0) {
+      newDay++;
+    }
+  }
+  let newDate = new Date(newYear, newMonth, newDay, newHour, newMin);
+  return newDate;
+};
