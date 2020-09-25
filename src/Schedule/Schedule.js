@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import Dnd from './Dnd';
 import {
   days,
@@ -6,30 +7,23 @@ import {
   toTimeNumber,
   getOneHalfHourAhead,
   setUpWeek,
-  entries,
   checkBlock,
 } from './util';
 import './Schedule.scss';
 
-// todo: when resize, change the endDate using week info, not just start and end
-
-// when recurring is toggled off, set startDate and endDate to the matching date for the current week
-// using the same time
-
-// use uuid to make ids for each new timeblock
-
-// make submit button, check if blockEntries is getting edited properly
-// or d a useEffect to send every change to db?
-
-// integrate with fullstack, add save button to send blockedTimes to server
-
 let current = new Date();
 let dayOfWeek = current.getDay();
 
-const Schedule = () => {
-  const [week, setWeek] = useState(setUpWeek());
+const Schedule = ({ change, entries }) => {
+  const [week] = useState(setUpWeek());
   const [blockedTimes, setBlockedTimes] = useState(entries);
   const [blockEntries, setBlockEntries] = useState(entries);
+
+  useEffect(() => {
+    if (change && blockEntries) {
+      change(blockEntries);
+    }
+  }, [blockEntries, change]);
 
   const destroy = (id) => {
     setBlockedTimes((blocks) => {
@@ -67,14 +61,14 @@ const Schedule = () => {
       day,
       title: '',
       recurring: false,
-      id: Math.random() * 20 * Math.random() * 1000,
+      id: uuidv4(),
     };
     setBlockedTimes([...blockedTimes, newBlock]);
+    setBlockEntries([...blockEntries, newBlock]);
   };
 
-  const changeRecurring = (e) => {
-    console.log('changeRecurring e: ', e);
-  };
+  const newDate = new Date();
+  const today = newDate.getDay();
 
   return (
     <div>
@@ -86,7 +80,7 @@ const Schedule = () => {
               .toDateString()
               .substring(0, day.toDateString().length - 4);
             return (
-              <div className='day-label' key={key}>
+              <div className={`day-label today-${today === i}`} key={key}>
                 {string}
               </div>
             );
@@ -115,6 +109,7 @@ const Schedule = () => {
                           {hour}
                         </div>
                       );
+                    else return null;
                   })}
                 </div>
               ))}
@@ -127,7 +122,7 @@ const Schedule = () => {
             }
             {blockedTimes.map((data) => {
               const inCurrentWeek = checkBlock(data, week);
-              if (inCurrentWeek) {
+              if (inCurrentWeek)
                 return (
                   <Dnd
                     invisible={data.invisible}
@@ -139,10 +134,9 @@ const Schedule = () => {
                     days={days}
                     times={halfHours}
                     setBlockedTimes={setBlockEntries}
-                    changeRecurring={changeRecurring}
                   />
                 );
-              }
+              else return null;
             })}
           </div>
         </div>

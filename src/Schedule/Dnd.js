@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Rnd } from 'react-rnd';
 import { dateFromDateAndTime } from './util';
 const Dnd = ({
@@ -13,15 +13,10 @@ const Dnd = ({
   const [day, setDay] = useState(data.day);
   const [startTime, setStartTime] = useState(data.start);
   const [endTime, setEndTime] = useState(data.end);
-  const [title, setTitle] = useState(data.title);
-
+  const [title] = useState(data.title);
   const [startDate, setStartDate] = useState(data.startDate);
   const [endDate, setEndDate] = useState(data.endDate);
   const [recurring, setRecurring] = useState(data.recurring);
-
-  useEffect(() => {
-    console.log({ endDate });
-  }, [endDate]);
 
   let t = times.indexOf(data.start);
   let e = times.indexOf(data.end);
@@ -54,7 +49,7 @@ const Dnd = ({
 
   const handleDrag = (e, el) => {
     let { node } = el;
-    let { transform, height, width } = node.style;
+    let { transform, height } = node.style;
 
     // NEW DAY
     let elX = el.x;
@@ -94,8 +89,6 @@ const Dnd = ({
 
   const handleResize = (e, dir, refToElement, d) => {
     let { transform, height } = refToElement.style;
-    let x = transform.split('(')[1];
-    x = x.split('px')[0];
     let y = transform.split(', ')[1];
     y = y.substring(0, y.length - 3);
     let start = times[y / 50];

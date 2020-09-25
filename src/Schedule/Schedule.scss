@@ -107,6 +107,11 @@ button:focus {
   .day-label {
     width: 150px;
     text-align: center;
+    color: rgb(196, 196, 196);
+  }
+  .today-true {
+    color: rgb(255, 255, 255);
+    font-weight: bold;
   }
 }
 .time-grid {
