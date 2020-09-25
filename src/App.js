@@ -1,5 +1,6 @@
 import React from 'react';
 import Schedule from './Schedule/Schedule';
+import './App.css';
 
 export const exampleEntries = [
   {
@@ -31,6 +32,8 @@ const App = () => {
 
   return (
     <div>
+      <h1 className='calendar-title'>REACT RnD CALENDAR</h1>
+      <div className='spacer'></div>
       <Schedule change={exampleHandleChange} entries={exampleEntries} />
     </div>
   );

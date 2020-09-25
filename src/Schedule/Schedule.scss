@@ -57,12 +57,10 @@ button:focus {
 
 .rnd-item {
   min-height: 5rem;
-  background: rgb(247, 255, 254);
+  background: rgb(230, 230, 230);
   color: rgb(4, 37, 28);
   border-radius: 3px;
-  // transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
   transition: all 0.5s ease;
-  // transition: transform 0.4s ease, height 0.4s ease, background 0.5s ease;
   font-weight: bold;
 }
 

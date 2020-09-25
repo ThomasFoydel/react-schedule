@@ -1,0 +1,15 @@
+.calendar-title {
+  font-size: 5rem;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 0.5rem;
+  position: fixed;
+  z-index: 9;
+  background: rgb(58, 58, 58);
+  top: 0;
+  color: rgb(180, 180, 180);
+}
+
+.spacer {
+  margin-top: 20rem;
+}
