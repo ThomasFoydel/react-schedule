@@ -12,7 +12,7 @@ import {
 import './Schedule.scss';
 
 // todos:
-// fix gridclick midnight bug
+// fix gridclick midnight height bug
 // add week shift forward and backward
 
 let current = new Date();
@@ -65,6 +65,7 @@ const Schedule = ({ change, entries }) => {
       recurring: false,
       id: uuidv4(),
     };
+    console.log({ newBlock });
     setBlockedTimes([...blockedTimes, newBlock]);
     setBlockEntries([...blockEntries, newBlock]);
   };
@@ -105,7 +106,7 @@ const Schedule = ({ change, entries }) => {
                         <div
                           className='grid-time'
                           style={{
-                            background: `rgb(0, ${110 - i / 2}, ${
+                            background: `rgb(${0 + i * 2}, ${110 - i / 2}, ${
                               159 + i * 2
                             })`,
                           }}

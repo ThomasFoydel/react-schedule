@@ -36,9 +36,11 @@ button:focus {
 ///////////////////////////////////////////////////////
 
 .absolute {
-  top: 5.6rem;
+  // top: 5.6rem;
+  // margin-bottom: 20rem;
   width: 100%;
-  margin-bottom: 20rem;
+  height: 65rem;
+  overflow: scroll;
 }
 
 .drag-n-drop {
