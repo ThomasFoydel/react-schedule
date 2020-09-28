@@ -127,7 +127,7 @@ const Dnd = ({
     <Rnd
       style={{
         // background: 'white',
-        border: '1px solid black',
+        // border: '2px solid black',
         position: 'relative',
         zIndex: invisible ? '-1' : '1',
         opacity: invisible ? '0' : '1',
