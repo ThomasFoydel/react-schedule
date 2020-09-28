@@ -61,16 +61,6 @@ export const halfHours = [
   '12:00 AM',
 ];
 
-export const toTimeNumber = (string) => {
-  let afterNoon = string.split(' ')[1] === 'PM';
-  let time = string.split(' ')[0];
-  let hour = time.split(':')[0];
-  let halfHour = time.split(':')[1];
-  if (afterNoon) hour = Number(hour) + 12;
-  if (hour < 10) hour = `0${hour}`;
-  return `${hour}:${halfHour}`;
-};
-
 export const getOneHalfHourAhead = (hour) => {
   let index = halfHours.indexOf(hour);
   return halfHours[index + 1];
@@ -160,3 +150,14 @@ export const dateFromDateAndTime = (date, time, startTime) => {
   let newDate = new Date(newYear, newMonth, newDay, newHour, newMin);
   return newDate;
 };
+
+// export const toTimeNumber = (string) => {
+//   let afterNoon = string.split(' ')[1] === 'PM';
+//   let time = string.split(' ')[0];
+//   let hour = time.split(':')[0];
+//   let halfHour = time.split(':')[1];
+//   if (afterNoon) hour = Number(hour) + 12;
+//   if (hour < 10) hour = `0${hour}`;
+//   // return `${hour}:${halfHour}`;
+//   return { hour, min: halfHour };
+// };

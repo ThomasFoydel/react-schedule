@@ -4,8 +4,8 @@ import Dnd from './Dnd';
 import {
   days,
   halfHours,
-  toTimeNumber,
   getOneHalfHourAhead,
+  dateFromDateAndTime,
   setUpWeek,
   checkBlock,
 } from './util';
@@ -42,14 +42,12 @@ const Schedule = ({ change, entries }) => {
     let clicked = week[dayIndex];
     let clickedDate = clicked.getDate();
     let clickedMonth = Number(clicked.getMonth());
-    clickedMonth++;
     if (clickedMonth < 10) clickedMonth = `0${clickedMonth}`;
     let clickedYear = clicked.getFullYear();
-    let hourMin = toTimeNumber(hour);
-    // todo: change the following to not use the datestring parsing method, pass in as separate args instead
-    // remember: when the method is changed, remove clickedMonth++ line above
-    let startString = `${clickedYear}-${clickedMonth}-${clickedDate}T${hourMin}`;
-    let startDate = new Date(startString);
+
+    let cDate = new Date(clickedYear, clickedMonth, clickedDate);
+    let startDate = dateFromDateAndTime(cDate, hour);
+
     let endTime = startDate.getTime() + 1800000;
     let endDate = new Date(endTime);
     let endHour = getOneHalfHourAhead(hour);
@@ -102,6 +100,11 @@ const Schedule = ({ change, entries }) => {
                       return (
                         <div
                           className='grid-time'
+                          style={{
+                            background: `rgb(0, ${110 - i / 2}, ${
+                              159 + i * 2
+                            })`,
+                          }}
                           key={hour}
                           id={JSON.stringify({ day, hour })}
                           onClick={handleGridClick}

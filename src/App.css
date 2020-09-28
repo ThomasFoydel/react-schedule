@@ -8,6 +8,7 @@
   background: rgb(58, 58, 58);
   top: 0;
   color: rgb(180, 180, 180);
+  user-select: none;
 }
 
 .spacer {
