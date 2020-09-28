@@ -11,6 +11,10 @@ import {
 } from './util';
 import './Schedule.scss';
 
+// todos:
+// fix gridclick midnight bug
+// add week shift forward and backward
+
 let current = new Date();
 let dayOfWeek = current.getDay();
 

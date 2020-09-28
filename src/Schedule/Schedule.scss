@@ -57,7 +57,11 @@ button:focus {
 
 .rnd-item {
   min-height: 5rem;
-  background: rgb(230, 230, 230);
+  background: linear-gradient(
+    to bottom right,
+    rgb(248, 248, 248),
+    rgb(189, 189, 189)
+  );
   color: rgb(4, 37, 28);
   border-radius: 9px;
   overflow: hidden;

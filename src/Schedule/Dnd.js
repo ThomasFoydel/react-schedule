@@ -126,8 +126,6 @@ const Dnd = ({
   return (
     <Rnd
       style={{
-        // background: 'white',
-        // border: '2px solid black',
         position: 'relative',
         zIndex: invisible ? '-1' : '1',
         opacity: invisible ? '0' : '1',
