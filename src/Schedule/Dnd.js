@@ -147,7 +147,8 @@ const Dnd = ({
     >
       <div>
         <p>
-          {day}-{title}
+          {day}
+          {/* -{title} */}
         </p>
 
         <button className='delete-btn' onClick={handleDestroy}>

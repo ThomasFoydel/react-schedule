@@ -70,7 +70,11 @@ button:focus {
 }
 
 .recurring-true {
-  background: rgb(181, 246, 255);
+  background: linear-gradient(
+    to bottom right,
+    rgb(181, 246, 255),
+    rgb(131, 196, 204)
+  );
 }
 
 .drag-bottom {
