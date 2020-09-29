@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Rnd } from 'react-rnd';
 import { dateFromDateAndTime } from './util';
 const Dnd = ({
@@ -8,18 +8,20 @@ const Dnd = ({
   days,
   times,
   setBlockedTimes,
+  setBlockEntries,
   invisible,
 }) => {
   const [day, setDay] = useState(data.day);
   const [startTime, setStartTime] = useState(data.start);
   const [endTime, setEndTime] = useState(data.end);
-  const [title] = useState(data.title);
+  // const [title] = useState(data.title);
   const [startDate, setStartDate] = useState(data.startDate);
   const [endDate, setEndDate] = useState(data.endDate);
   const [recurring, setRecurring] = useState(data.recurring);
 
   let t = times.indexOf(data.start);
   let e = times.indexOf(data.end);
+  if (t === 47) e = 48;
   e = e - t;
   e *= 50;
   t *= 50;
@@ -31,19 +33,34 @@ const Dnd = ({
 
   const updateBlocks = () => {
     setBlockedTimes((times) => {
-      let filteredTimes = times.filter((time) => time.id !== data.id);
-      let newTimes = [
-        ...filteredTimes,
-        {
-          end: endTime,
-          start: startTime,
-          startDate,
-          endDate,
-          id: data.id,
-          recurring,
-        },
-      ];
-      return newTimes;
+      let index = times.findIndex((x) => x.id === data.id);
+      let newTime = {
+        end: endTime,
+        start: startTime,
+        startDate,
+        endDate,
+        id: data.id,
+        recurring,
+      };
+      let copy = [...times];
+      copy[index] = newTime;
+      setBlockEntries(copy);
+      return copy;
+      // let filteredTimes = times.filter((time) => time.id !== data.id);
+      // let newTimes = [
+      //   ...filteredTimes,
+      //   {
+      //     end: endTime,
+      //     start: startTime,
+      //     startDate,
+      //     endDate,
+      //     id: data.id,
+      //     recurring,
+      //   },
+      // ];
+
+      // console.log({ RECURfromUPDATE: recurring });
+      // console.log({ newTimes });
     });
   };
 
@@ -120,9 +137,16 @@ const Dnd = ({
     setStartDate(newStartDate);
     let newEndDate = dateFromDateAndTime(currentWeekDate, endTime, startTime);
     setEndDate(newEndDate);
-    setRecurring((recurring) => !recurring);
-    updateBlocks();
+    setRecurring((recurring) => {
+      // console.log({ recurringOpposite: !recurring });
+      return !recurring;
+    });
+    // updateBlocks();
   };
+
+  useEffect(() => {
+    updateBlocks();
+  }, [recurring]);
   return (
     <Rnd
       style={{

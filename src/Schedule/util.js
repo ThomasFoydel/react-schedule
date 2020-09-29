@@ -66,13 +66,19 @@ export const getOneHalfHourAhead = (hour) => {
   return halfHours[index + 1];
 };
 
-export const setUpWeek = (weeksForward) => {
+export const setUpWeek = (weekShift) => {
+  const mSecondsInADay = 86400000;
+  const mSecondsInAWeek = 604800000;
+
   let current = new Date();
-  let dayOfWeek = current.getDay();
+  const dayOfWeek = current.getDay();
+  let currentTime = current.getTime();
+
+  // nowDate = the current day of the week, shifted to whatever the current week is
+  let nowDate = new Date(currentTime + mSecondsInAWeek * weekShift);
+  let now = nowDate.getTime();
 
   let weekObj = {};
-  let mSecondsInADay = 86400000;
-  let now = Date.now();
 
   // fill in forwards to saturday
   for (let i = dayOfWeek; i < 7; i++) {
@@ -86,7 +92,7 @@ export const setUpWeek = (weeksForward) => {
     let count = 1;
     for (let j = dayOfWeek; j > 0; j--) {
       let daysBefore = count * mSecondsInADay;
-      let date = new Date(current - daysBefore);
+      let date = new Date(nowDate - daysBefore);
       weekObj[j - 1] = date;
       count++;
       //

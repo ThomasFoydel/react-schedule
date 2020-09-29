@@ -12,14 +12,16 @@ import {
 import './Schedule.scss';
 
 // todos:
-// fix gridclick midnight height bug
-// add week shift forward and backward
+// double check values across blockentries and blocktimes for all changes
 
 let current = new Date();
 let dayOfWeek = current.getDay();
 
+let currentWeek = setUpWeek(0);
+
 const Schedule = ({ change, entries }) => {
-  const [week] = useState(setUpWeek());
+  const [weekShift, setWeekShift] = useState(0);
+  const [week, setWeek] = useState(currentWeek);
   const [blockedTimes, setBlockedTimes] = useState(entries);
   const [blockEntries, setBlockEntries] = useState(entries);
 
@@ -46,7 +48,6 @@ const Schedule = ({ change, entries }) => {
     let clicked = week[dayIndex];
     let clickedDate = clicked.getDate();
     let clickedMonth = Number(clicked.getMonth());
-    if (clickedMonth < 10) clickedMonth = `0${clickedMonth}`;
     let clickedYear = clicked.getFullYear();
 
     let cDate = new Date(clickedYear, clickedMonth, clickedDate);
@@ -65,7 +66,6 @@ const Schedule = ({ change, entries }) => {
       recurring: false,
       id: uuidv4(),
     };
-    console.log({ newBlock });
     setBlockedTimes([...blockedTimes, newBlock]);
     setBlockEntries([...blockEntries, newBlock]);
   };
@@ -73,9 +73,24 @@ const Schedule = ({ change, entries }) => {
   const newDate = new Date();
   const today = newDate.getDay();
 
+  const handleWeekShift = (newShift) => {
+    setWeek(setUpWeek(newShift));
+    setWeekShift(newShift);
+  };
+
+  useEffect(() => {
+    console.log('BLOCK TIMES USE FX: ', blockedTimes);
+  }, [blockedTimes]);
+
   return (
     <div>
       <div className='dnd'>
+        <div className='weekshift-btns'>
+          <button onClick={() => handleWeekShift(weekShift - 1)}>back</button>
+          <button onClick={() => handleWeekShift(weekShift + 1)}>
+            forward
+          </button>
+        </div>
         <div className='labels'>
           {Object.keys(week).map((key, i) => {
             let day = week[key];
@@ -130,21 +145,22 @@ const Schedule = ({ change, entries }) => {
             }
             {blockedTimes.map((data) => {
               const inCurrentWeek = checkBlock(data, week);
-              if (inCurrentWeek)
-                return (
-                  <Dnd
-                    invisible={data.invisible}
-                    data={data}
-                    destroy={destroy}
-                    key={data.id}
-                    week={week}
-                    currentDay={dayOfWeek}
-                    days={days}
-                    times={halfHours}
-                    setBlockedTimes={setBlockEntries}
-                  />
-                );
-              else return null;
+              console.log({ data });
+
+              return (
+                <Dnd
+                  invisible={inCurrentWeek ? data.invisible : true}
+                  data={data}
+                  destroy={destroy}
+                  key={data.id}
+                  week={week}
+                  currentDay={dayOfWeek}
+                  days={days}
+                  times={halfHours}
+                  setBlockEntries={setBlockEntries}
+                  setBlockedTimes={setBlockedTimes}
+                />
+              );
             })}
           </div>
         </div>
