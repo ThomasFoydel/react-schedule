@@ -32,7 +32,7 @@ const App = () => {
 
   return (
     <div>
-      <h1 className='calendar-title'>REACT RnD CALENDAR</h1>
+      <h1 className='calendar-title'>REACT RnD SCHEDULE</h1>
       <div className='spacer'></div>
       <Schedule change={exampleHandleChange} entries={exampleEntries} />
     </div>

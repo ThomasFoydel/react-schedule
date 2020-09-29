@@ -3,6 +3,6 @@
 <img src="/client/public/img/preview.png" width="100%">
 
 A react component for handling ability or lack thereof
-Build with the resizable, draggable react-rnd package
+built with the resizable, draggable react-rnd package
 
 Thomas Foydel 2020
