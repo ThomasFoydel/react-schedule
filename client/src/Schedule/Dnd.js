@@ -32,36 +32,41 @@ const Dnd = ({
   };
 
   const updateBlocks = () => {
+    let newTime = {
+      end: endTime,
+      start: startTime,
+      startDate,
+      endDate,
+      id: data.id,
+      recurring,
+    };
     setBlockedTimes((times) => {
       let index = times.findIndex((x) => x.id === data.id);
-      let newTime = {
-        end: endTime,
-        start: startTime,
-        startDate,
-        endDate,
-        id: data.id,
-        recurring,
-      };
       let copy = [...times];
       copy[index] = newTime;
-      setBlockEntries(copy);
       return copy;
-      // let filteredTimes = times.filter((time) => time.id !== data.id);
-      // let newTimes = [
-      //   ...filteredTimes,
-      //   {
-      //     end: endTime,
-      //     start: startTime,
-      //     startDate,
-      //     endDate,
-      //     id: data.id,
-      //     recurring,
-      //   },
-      // ];
-
-      // console.log({ RECURfromUPDATE: recurring });
-      // console.log({ newTimes });
     });
+    setBlockEntries((entries) => {
+      let index = entries.findIndex((x) => x.id === data.id);
+      let copy = [...entries];
+      copy[index] = newTime;
+      return copy;
+    });
+    // let filteredTimes = times.filter((time) => time.id !== data.id);
+    // let newTimes = [
+    //   ...filteredTimes,
+    //   {
+    //     end: endTime,
+    //     start: startTime,
+    //     startDate,
+    //     endDate,
+    //     id: data.id,
+    //     recurring,
+    //   },
+    // ];
+
+    // console.log({ RECURfromUPDATE: recurring });
+    // console.log({ newTimes });
   };
 
   const handleDrag = (e, el) => {

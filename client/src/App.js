@@ -27,7 +27,7 @@ export const exampleEntries = [
 
 const App = () => {
   const exampleHandleChange = (e) => {
-    console.log(e);
+    console.log('entries (handlechange): ', e);
   };
 
   return (

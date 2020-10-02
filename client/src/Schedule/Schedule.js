@@ -70,18 +70,13 @@ const Schedule = ({ change, entries }) => {
     setBlockEntries([...blockEntries, newBlock]);
   };
 
-  const newDate = new Date();
-  const today = newDate.getDay();
-
   const handleWeekShift = (newShift) => {
     setWeek(setUpWeek(newShift));
     setWeekShift(newShift);
   };
 
-  useEffect(() => {
-    console.log('BLOCK TIMES USE FX: ', blockedTimes);
-  }, [blockedTimes]);
-
+  const newDate = new Date();
+  const today = newDate.getDay();
   return (
     <div>
       <div className='dnd'>
@@ -145,7 +140,6 @@ const Schedule = ({ change, entries }) => {
             }
             {blockedTimes.map((data) => {
               const inCurrentWeek = checkBlock(data, week);
-              console.log({ data });
 
               return (
                 <Dnd
