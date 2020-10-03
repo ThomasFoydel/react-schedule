@@ -26,10 +26,8 @@ const Schedule = ({ change, entries }) => {
   const [blockEntries, setBlockEntries] = useState(entries);
 
   useEffect(() => {
-    if (change && blockEntries) {
-      change(blockEntries);
-    }
-  }, [blockEntries, change]);
+    console.log('block entries: ', blockEntries);
+  }, [blockEntries]);
 
   const destroy = (id) => {
     setBlockedTimes((blocks) => {
@@ -77,6 +75,13 @@ const Schedule = ({ change, entries }) => {
 
   const newDate = new Date();
   const today = newDate.getDay();
+
+  const handleDndEntries = (e) => {
+    setBlockEntries(e);
+  };
+  const handleBlockedTimes = (e) => {
+    setBlockedTimes(e);
+  };
   return (
     <div>
       <div className='dnd'>
@@ -151,8 +156,8 @@ const Schedule = ({ change, entries }) => {
                   currentDay={dayOfWeek}
                   days={days}
                   times={halfHours}
-                  setBlockEntries={setBlockEntries}
-                  setBlockedTimes={setBlockedTimes}
+                  setBlockEntries={handleDndEntries}
+                  setBlockedTimes={handleBlockedTimes}
                 />
               );
             })}

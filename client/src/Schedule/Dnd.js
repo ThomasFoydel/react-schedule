@@ -18,6 +18,7 @@ const Dnd = ({
   const [startDate, setStartDate] = useState(data.startDate);
   const [endDate, setEndDate] = useState(data.endDate);
   const [recurring, setRecurring] = useState(data.recurring);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   let t = times.indexOf(data.start);
   let e = times.indexOf(data.end);
@@ -64,9 +65,6 @@ const Dnd = ({
     //     recurring,
     //   },
     // ];
-
-    // console.log({ RECURfromUPDATE: recurring });
-    // console.log({ newTimes });
   };
 
   const handleDrag = (e, el) => {
@@ -130,7 +128,7 @@ const Dnd = ({
     }
   };
 
-  const toggleRecurring = () => {
+  const toggleRecurring = (e) => {
     // set startDate to match the current week
     // get current day of the week
     // get that date from the week obj
@@ -143,14 +141,16 @@ const Dnd = ({
     let newEndDate = dateFromDateAndTime(currentWeekDate, endTime, startTime);
     setEndDate(newEndDate);
     setRecurring((recurring) => {
-      // console.log({ recurringOpposite: !recurring });
       return !recurring;
     });
-    // updateBlocks();
   };
 
   useEffect(() => {
-    updateBlocks();
+    if (firstLoad) {
+      setFirstLoad(false);
+    } else {
+      updateBlocks();
+    }
   }, [recurring]);
   return (
     <Rnd
@@ -180,13 +180,21 @@ const Dnd = ({
           {/* -{title} */}
         </p>
 
-        <button className='delete-btn' onClick={handleDestroy}>
+        <button
+          className='delete-btn'
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={handleDestroy}
+        >
           X
         </button>
         <p>
           {startTime} - {endTime}
         </p>
-        <button className='recurring-btn' onClick={toggleRecurring}>
+        <button
+          className='recurring-btn'
+          onClick={toggleRecurring}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
           R
         </button>
       </div>
