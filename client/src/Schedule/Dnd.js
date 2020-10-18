@@ -159,7 +159,7 @@ const Dnd = ({
   return (
     <Rnd
       style={{
-        position: 'relative',
+        position: 'absolute',
         zIndex: invisible ? '-1' : '1',
         opacity: invisible ? '0' : '1',
       }}
